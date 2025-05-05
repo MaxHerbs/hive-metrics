@@ -35,7 +35,7 @@ service:
 ingress:
   create: true
   className: traefik
-  host: ***********************
+  host: hive-proxy.theoffice.uk
 
 
 opentelemetry-collector:
@@ -49,23 +49,16 @@ opentelemetry-collector:
       servicePort: 9090
       protocol: TCP
 
-  podAnnotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "9090"
-
   config:
     receivers:
       otlp:
         protocols:
           http:
             endpoint: 0.0.0.0:4318
-
     exporters:
       prometheus:
         endpoint: 0.0.0.0:9090
-
-      debug: {}
-
+      # debug: {}
     service:
       pipelines:
         metrics:
@@ -73,20 +66,17 @@ opentelemetry-collector:
             - otlp
           exporters:
             - prometheus
-            - debug
-
+            # - debug
       telemetry:
-        logs:
-          level: "DEBUG"
-          development: true
-          encoding: "json"
-
-
+        # logs:
+        #   level: "DEBUG"
+        #   development: true
+        #   encoding: "json"
   ingress:
     enabled: true
     ingressClassName: traefik
     hosts:
-      - host: *****************
+      - host: hive-otel.theoffice.uk
         paths:
           - path: /
             pathType: Prefix
@@ -99,11 +89,26 @@ prometheus:
     enabled: false
   prometheus-pushgateway:
     enabled: false
+  alertmanager:
+    enabled: false
+
+  serverFiles:
+    prometheus.yml:
+      scrape_configs:
+      - job_name: 'Prometheus'
+        scrape_interval: 5y
+        static_configs:
+          - targets: ['localhost:9090']
   server:
-    global:
-      scrape_interval: 15s
     ingress:
       enabled: true
       ingressClassName: traefik
       hosts:
-        - ***********************
+        - hive-prometheus.theoffice.uk
+  extraScrapeConfigs: |
+    - job_name: 'otel-collector'
+      scrape_interval: 30s
+      scrape_timeout: 30s
+      static_configs:
+        - targets:
+            - "{{ .Release.Name }}-opentelemetry-collector:9090"

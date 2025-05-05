@@ -5,8 +5,5 @@ dependencies:
 - name: opentelemetry-collector
   repository: https://open-telemetry.github.io/opentelemetry-helm-charts
   version: 0.114.0
-- name: common
-  repository: oci://docker.io/bitnamicharts
-  version: 2.23.0
-digest: sha256:0fdcd5906add107f0f3e4da66732a23f634ca330c32522e8426968b759333d14
-generated: "2025-05-14T23:08:41.528419556+01:00"
+digest: sha256:b216a4fb01c48c39e53e9ef93d785c42bbb5f788a0ea0d37afb524a3137ddef5
+generated: "2025-05-08T23:27:51.579671226+01:00"
