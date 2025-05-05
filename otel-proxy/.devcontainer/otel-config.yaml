@@ -1,0 +1,26 @@
+receivers:
+  otlp:
+    protocols:
+      http:
+        endpoint: 0.0.0.0:4318
+
+exporters:
+  prometheus:
+    endpoint: 0.0.0.0:9090
+
+  debug: {}
+
+service:
+  pipelines:
+    metrics:
+      receivers:
+        - otlp
+      exporters:
+        - prometheus
+        - debug
+
+  telemetry:
+    logs:
+      level: "DEBUG"
+      development: true
+      encoding: "json"

@@ -1,0 +1,28 @@
+on:
+  workflow_call:
+
+env:
+  SETUPTOOLS_SCM_PRETEND_VERSION: 1.2.3
+
+jobs:
+  run:
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install otel-proxy
+        run: |
+          pip install ./otel-proxy[dev]
+
+      - name: Run tox
+        run: |
+          cd otel-proxy
+          # This is horrible - mocking the git status so tox will run
+          git init
+          git config --global user.email "you@example.com"
+          git config --global user.name "Your Name"
+          git add .
+          git commit -m "Placeholder"
+          tox -p
