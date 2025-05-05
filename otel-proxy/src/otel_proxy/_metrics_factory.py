@@ -43,9 +43,7 @@ def build_otlp(device: DevicePayload) -> str:
     logger.debug(metrics)
 
     payload_body = str(payload)
-    payload_body = payload_body.replace(
-        "'$METRICS'", str(metrics)
-    )  # TODO: This isnt quite right, adds "" around list
+    payload_body = payload_body.replace("'$METRICS'", str(metrics))
     payload_body = payload_body.replace("$TIMESTAMP", str(int(time.time() * 1e9)))
     payload_body = payload_body.replace("'", '"')
     logger.error("\n\n")
