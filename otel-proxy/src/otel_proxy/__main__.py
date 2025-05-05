@@ -1,7 +1,7 @@
 import typer
 import uvicorn
 
-from ._version import __version__
+from ._version import get_version
 from .proxy import app
 
 cli = typer.Typer(no_args_is_help=True)
@@ -23,7 +23,7 @@ def run(
 
 def version_callback(value: bool):
     if value:
-        typer.echo(f"{__version__}")
+        typer.echo(f"{get_version()}")
         raise typer.Exit()
 
 
