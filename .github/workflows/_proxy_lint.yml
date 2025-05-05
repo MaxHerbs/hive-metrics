@@ -1,9 +1,6 @@
 on:
   workflow_call:
 
-env:
-  SETUPTOOLS_SCM_PRETEND_VERSION: 1.2.3
-
 jobs:
   run:
     runs-on: "ubuntu-latest"
@@ -16,13 +13,8 @@ jobs:
         run: |
           pip install ./otel-proxy[dev]
 
-      - name: Run tox
+      - name: Run lint
         run: |
           cd otel-proxy
-          # This is horrible - mocking the git status so tox will run
-          git init
-          git config --global user.email "you@example.com"
-          git config --global user.name "Your Name"
-          git add .
-          git commit -m "Placeholder"
-          tox -p
+          ruff check
+          ruff format
