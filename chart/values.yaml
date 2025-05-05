@@ -1,0 +1,69 @@
+opentelemetry-collector:
+  image:
+    repository: otel/opentelemetry-collector-contrib
+  mode: deployment
+  ports:
+    prometheus:
+      enabled: true
+      containerPort: 9090
+      servicePort: 9090
+      protocol: TCP
+
+  podAnnotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9090"
+
+  config:
+    receivers:
+      otlp:
+        protocols:
+          http:
+            endpoint: 0.0.0.0:4318
+
+    exporters:
+      prometheus:
+        endpoint: 0.0.0.0:9090
+
+      debug: {}
+
+    service:
+      pipelines:
+        metrics:
+          receivers:
+            - otlp
+          exporters:
+            - prometheus
+            - debug
+
+      telemetry:
+        logs:
+          level: "DEBUG"
+          development: true
+          encoding: "json"
+
+
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    hosts:
+      - host: *****************
+        paths:
+          - path: /
+            pathType: Prefix
+            port: 4318
+
+prometheus:
+  kube-state-metrics:
+    enabled: false
+  prometheus-node-exporter:
+    enabled: false
+  prometheus-pushgateway:
+    enabled: false
+  server:
+    global:
+      scrape_interval: 15s
+    ingress:
+      enabled: true
+      ingressClassName: traefik
+      hosts:
+        - ***********************
