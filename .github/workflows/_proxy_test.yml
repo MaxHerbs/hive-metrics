@@ -3,10 +3,6 @@ name: otel-proxy-tests
 on:
   workflow_call:
 
-env:
-  SETUPTOOLS_SCM_PRETEND_VERSION: 1.2.3
-
-
 jobs:
   test:
     runs-on: "ubuntu-latest"
