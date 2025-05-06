@@ -12,7 +12,14 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
 ]
 description = "Proxy API to convert simplified JSON packages from IoT devices to OTLP-compliant metrics."
-dependencies = ["typer", "fastapi", "uvicorn", "httpx", "asyncio"]
+dependencies = [
+    "typer",
+    "fastapi",
+    "uvicorn",
+    "httpx",
+    "asyncio",
+    "pydantic_settings",
+]
 license.file = "LICENSE"
 readme = "README.md"
 requires-python = ">=3.10"

@@ -33,22 +33,19 @@ def get_supported_metrics() -> dict:
 def build_otlp(device: DevicePayload) -> str:
     payload = get_payload_base(device)
     metrics = []
-    logger.debug(f"Available Modules {module_map}")
 
     for metric, val in device.metrics.items():
         logger.debug(f"Metric: {metric}, val: {val}")
         if fn := module_map.get(metric, None):
-            logger.debug(f"Found function for {metric}")
+            logger.debug(f"Running metric fn for {metric}")
             metrics.append(fn(val))
-    logger.debug(metrics)
+    logger.debug(f"All metrics: {metrics}")
 
     payload_body = str(payload)
     payload_body = payload_body.replace("'$METRICS'", str(metrics))
     payload_body = payload_body.replace("$TIMESTAMP", str(int(time.time() * 1e9)))
     payload_body = payload_body.replace("'", '"')
-    logger.error("\n\n")
-    logger.error(payload_body)
-    logger.error("\n\n")
+    logger.debug(f"Post body:\n{payload_body}")
     return json.loads(payload_body)
 
 

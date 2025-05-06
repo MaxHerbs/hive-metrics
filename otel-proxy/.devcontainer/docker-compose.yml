@@ -8,7 +8,7 @@ services:
       - ./..:/workspace:cached,z
     command: sleep infinity
     environment:
-    - OTEL_URL="http://otel-collectory:4318/v1/metrics"
+    - OTEL_URL="http://otel-collector:4318/v1/metrics"
     - SETUPTOOLS_SCM_PRETEND_VERSION=1.2.3
 
 
