@@ -1,3 +1,5 @@
+import os
+
 import typer
 import uvicorn
 
@@ -18,6 +20,7 @@ def run(
         Port: The port to run the proxy on.
     """
     typer.echo(f"Starting the proxy on port {port}")
+    typer.echo(f"Targeting {os.environ['OTEL_URL']}")
     uvicorn.run(app, host="0.0.0.0", port=int(port), reload=False, log_level="trace")
 
 
