@@ -1,0 +1,30 @@
+name: hive-monitor lint
+
+on:
+  workflow_call:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/pip
+          key: ${{ runner.os }}-monitor-lint
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: install linter
+        run: pip install cpplint
+
+      - name: lint main
+        run: cpplint --repository=. --recursive --linelength=120 --verbose=4 --filter=-build/include,-build/header_guard ./hive-monitor/src
+
+      - name: lint libs
+        run: cpplint --repository=. --recursive --linelength=120 --verbose=4 --filter=-build/include,-build/header_guard ./hive-monitor/lib

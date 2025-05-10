@@ -1,0 +1,37 @@
+name: hive-monitor build and test
+
+on:
+  workflow_call:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/pip
+            ~/.platformio/.cache
+          key: ${{ runner.os }}-pio-test
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install PlatformIO Core
+        run: pip install --upgrade platformio
+
+      - name: Test hive-monitor
+        run: |
+          cd hive-monitor
+          pio test -e native
+
+      - name: Build hive-monitor
+        run: |
+          cd hive-monitor
+          pio run -e esp32dev
