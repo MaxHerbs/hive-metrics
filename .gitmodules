@@ -1,0 +1,3 @@
+[submodule "hive-monitor/lib/esp32DHT"]
+	path = hive-monitor/lib/esp32DHT
+	url = https://github.com/bertmelis/esp32DHT.git
