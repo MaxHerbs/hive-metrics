@@ -24,7 +24,7 @@ jobs:
         run: pip install cpplint
 
       - name: lint main
-        run: cpplint --repository=. --recursive --linelength=120 --verbose=4 --filter=-build/include,-build/header_guard ./hive-monitor/src
+        run: |
+          cd hive-monitor
+          ./scripts/lint.sh
 
-      - name: lint libs
-        run: cpplint --repository=. --recursive --linelength=120 --verbose=4 --filter=-build/include,-build/header_guard ./hive-monitor/lib

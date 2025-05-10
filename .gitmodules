@@ -1,3 +1,6 @@
 [submodule "hive-monitor/lib/esp32DHT"]
 	path = hive-monitor/lib/esp32DHT
 	url = https://github.com/bertmelis/esp32DHT.git
+[submodule "hive-monitor/lib/ArduinoJson"]
+	path = hive-monitor/lib/ArduinoJson
+	url = https://github.com/bblanchon/ArduinoJson.git
