@@ -1,0 +1,6 @@
+# Helm Charts
+*.yaml linguist-detectable
+*.tpl linguist-detectable linguist-language=yaml
+
+# Hive Monitor
+*.h linguist-detectable linguist-language=c++
