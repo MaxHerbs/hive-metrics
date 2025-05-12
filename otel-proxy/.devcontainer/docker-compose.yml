@@ -3,14 +3,12 @@ services:
     build:
       context: ..
       dockerfile: ./Dockerfile
-      target: developer
+      target: build
     volumes:
       - ./..:/workspace:cached,z
     command: sleep infinity
     environment:
-    - OTEL_URL="http://otel-collector:4318/v1/metrics"
-    - SETUPTOOLS_SCM_PRETEND_VERSION=1.2.3
-
+    - OTEL_URL=http://otel-collector:4318/v1/metrics
 
   otel-collector:
     image: docker.io/otel/opentelemetry-collector-contrib:latest 
@@ -26,7 +24,6 @@ services:
     command: "--config /workspace/.devcontainer/otel-config.yaml"
 
   prometheus:
-    depends_on: [ otel-collector ]
     image: prom/prometheus:latest
     container_name: prometheus
     ports:
