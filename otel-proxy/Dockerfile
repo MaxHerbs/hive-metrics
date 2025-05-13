@@ -1,31 +1,13 @@
-# The devcontainer should use the developer target and run as root with podman
-# or docker with user namespaces.
-ARG PYTHON_VERSION=3.11
-FROM python:${PYTHON_VERSION} AS developer
+FROM docker.io/library/rust:1.86.0-bookworm AS build
+RUN rustup component add rustfmt clippy
 
-ENV SETUPTOOLS_SCM_PRETEND_VERSION=1.2.3
+WORKDIR /app
 
-# Add any system dependencies for the developer/build environment here
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    graphviz \
-    && rm -rf /var/lib/apt/lists/*
+RUN cargo init
+COPY Cargo.toml Cargo.lock ./
 
-# Set up a virtual environment and put it in PATH
-RUN python -m venv /venv
-ENV PATH=/venv/bin:$PATH
+RUN cargo build --release
 
-# The build stage installs the context into the venv
-FROM developer AS build
-COPY . /context
-WORKDIR /context
-RUN touch dev-requirements.txt && pip install -c dev-requirements.txt .
+COPY src ./
 
-# The runtime stage copies the built venv into a slim runtime container
-FROM python:${PYTHON_VERSION}-slim AS runtime
-# Add apt-get system dependecies for runtime here if needed
-COPY --from=build /venv/ /venv/
-ENV PATH=/venv/bin:$PATH
-
-# change this entrypoint if it is not the same as the repo
-ENTRYPOINT ["otel-proxy"]
-CMD ["--version"]
+RUN cargo build --release
