@@ -17,6 +17,7 @@ jobs:
           path: |
             ~/.cache/pip
             ~/.platformio/.cache
+            ./.pio
           key: ${{ runner.os }}-pio-test
 
       - uses: actions/setup-python@v5
