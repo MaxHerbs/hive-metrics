@@ -36,6 +36,7 @@ struct ServeArgs {
     #[arg(long, env = "OTEL_URL")]
     otel_url: String,
 
+    /// Config string for reported guages
     #[arg(long, env = "METRICS_CONFIG")]
     metrics_config: String,
 }

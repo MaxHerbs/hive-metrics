@@ -1,20 +1,63 @@
+name: otel-proxy code
+
 on:
   workflow_call:
 
 jobs:
-  run:
-    runs-on: "ubuntu-latest"
-
+  lint:
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Checkout source
+        uses: actions/checkout@v4.2.2
 
-      - name: Install otel-proxy
-        run: |
-          pip install ./otel-proxy[dev]
+      - name: Install stable toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1.12.0
+        with:
+          cache: false
+          components: clippy,rustfmt
 
-      - name: Run lint
-        run: |
-          cd otel-proxy
-          ruff check
-          ruff format
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ./otel-proxy/target
+          key: rust-lint
+
+      - name: Check Formatting
+        working-directory: otel-proxy
+        run: >
+          cargo fmt
+          --all
+          --check
+
+      - name: Lint with Clippy
+        working-directory: otel-proxy
+        run: >
+          cargo clippy
+          --all-targets
+          --all-features
+          --no-deps
+
+  # test:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout source
+  #       uses: actions/checkout@v4.2.2
+
+  #     - name: Install stable toolchain
+  #       uses: actions-rust-lang/setup-rust-toolchain@v1.12.0
+  #       with:
+  #         cache: false
+  #         components: rustfmt
+
+  #     - name: Cache Rust Build
+  #       uses: Swatinem/rust-cache@v2.7.8
+  #       with:
+  #         shared-key: backend/graph-proxy
+  #         workspaces: backend
+
+  #     - name: Run Tests
+  #       working-directory: backend/graph-proxy
+  #       run: >
+  #         cargo test
+  #         --all-targets
+  #         --all-features
