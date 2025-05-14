@@ -45,7 +45,7 @@ jobs:
         uses: docker/build-push-action@v6.16.0
         with:
           context: ./otel-proxy 
-          target: build
+          target: runtime
           push: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags/otel-proxy@') }}
           load: ${{ !(github.event_name == 'push' && startsWith(github.ref, 'refs/tags/otel-proxy@')) }}
           tags: ${{ steps.meta.outputs.tags }}
