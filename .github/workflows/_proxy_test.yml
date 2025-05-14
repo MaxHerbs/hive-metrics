@@ -20,19 +20,8 @@ jobs:
         with:
           path: |
             ./otel-proxy/target
-          key: rust-lint
+          key: rust-test
 
       - name: Check Formatting
         working-directory: otel-proxy
-        run: >
-          cargo fmt
-          --all
-          --check
-
-      - name: Lint with Clippy
-        working-directory: otel-proxy
-        run: >
-          cargo clippy
-          --all-targets
-          --all-features
-          --no-deps
+        run: cargo test
