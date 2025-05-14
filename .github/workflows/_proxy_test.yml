@@ -1,10 +1,10 @@
-name: otel-proxy code
+name: otel-proxy test
 
 on:
   workflow_call:
 
 jobs:
-  lint:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source
@@ -22,6 +22,6 @@ jobs:
             ./otel-proxy/target
           key: rust-test
 
-      - name: Check Formatting
+      - name: Run test
         working-directory: otel-proxy
         run: cargo test
