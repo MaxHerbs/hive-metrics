@@ -91,7 +91,6 @@ mod tests {
 
     #[tokio::test]
     async fn end_to_end_proxy_test() {
-        // Setup fake metrics config
         let metrics_config = r#"
         [
             {
