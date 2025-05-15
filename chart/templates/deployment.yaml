@@ -27,8 +27,7 @@ spec:
         - name: otel-proxy
           image: {{ include "common.images.image" ( dict "imageRoot" $.Values.image "global" $.Values.global "chart" $.Chart ) }}
           imagePullPolicy: {{ $.Values.image.pullPolicy }}
-          # TODO: Correct this when releasing next version
-          command: ["/app/target/release/otel-proxy"]
+          command: ["/otel-proxy"]
           args:
             - serve
           env:

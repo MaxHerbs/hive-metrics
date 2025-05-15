@@ -35,7 +35,7 @@ service:
 ingress:
   create: true
   className: traefik
-  host: ***********************
+  host: aaaaaaaaaaaaaaaaaaaaaaa
 
 
 opentelemetry-collector:
@@ -86,7 +86,7 @@ opentelemetry-collector:
     enabled: true
     ingressClassName: traefik
     hosts:
-      - host: *****************
+      - host: aaaaaaaaaaaaaaaaa
         paths:
           - path: /
             pathType: Prefix
@@ -106,4 +106,4 @@ prometheus:
       enabled: true
       ingressClassName: traefik
       hosts:
-        - ***********************
+        - aaaaaaaaaaaaaaaaaaaaaaa
