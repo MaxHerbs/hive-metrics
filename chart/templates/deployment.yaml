@@ -27,15 +27,14 @@ spec:
         - name: otel-proxy
           image: {{ include "common.images.image" ( dict "imageRoot" $.Values.image "global" $.Values.global "chart" $.Chart ) }}
           imagePullPolicy: {{ $.Values.image.pullPolicy }}
-          # TODO: Correct this when releasing next version
-          command: ["/app/target/release/otel-proxy"]
+          command: ["/otel-proxy"]
           args:
             - serve
           env:
             - name: PORT 
               value: "{{ $.Values.deployment.port }}"
             - name: OTEL_URL
-              value: "{{ .Release.Namespace }}-opentelemetry-collector.{{ .Release.Namespace }}.svc.cluster.local"
+              value: "http://{{ .Release.Name }}-opentelemetry-collector.{{ .Release.Namespace }}.svc.cluster.local:4318/v1/metrics"
             - name: METRICS_CONFIG
               value: '{{ $.Values.deployment.metricsConfig | toJson }}'
           ports:

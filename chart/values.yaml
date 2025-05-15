@@ -59,13 +59,10 @@ opentelemetry-collector:
         protocols:
           http:
             endpoint: 0.0.0.0:4318
-
     exporters:
       prometheus:
         endpoint: 0.0.0.0:9090
-
-      debug: {}
-
+      # debug: {}
     service:
       pipelines:
         metrics:
@@ -73,20 +70,17 @@ opentelemetry-collector:
             - otlp
           exporters:
             - prometheus
-            - debug
-
+            # - debug
       telemetry:
-        logs:
-          level: "DEBUG"
-          development: true
-          encoding: "json"
-
-
+        # logs:
+        #   level: "DEBUG"
+        #   development: true
+        #   encoding: "json"
   ingress:
     enabled: true
     ingressClassName: traefik
     hosts:
-      - host: *****************
+      - host: ***************************
         paths:
           - path: /
             pathType: Prefix
