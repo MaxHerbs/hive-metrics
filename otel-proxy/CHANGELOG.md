@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.2](https://github.com/MaxHerbs/hive-metrics/compare/otel-proxy@v0.1.1...otel-proxy@v0.1.2) (2025-05-15)
+
+
+### Features
+
+* **proxy:** improved handling of unsupported metrics ([ddac27f](https://github.com/MaxHerbs/hive-metrics/commit/ddac27f4e836699155c5f37eb7192a91c7fbd3eb))
+* **proxy:** runtime container ([4d1a68c](https://github.com/MaxHerbs/hive-metrics/commit/4d1a68ccf911ffb051cbcb80899f93a2b2247115))
+
 ## [0.1.1](https://github.com/MaxHerbs/hive-metrics/compare/otel-proxy@v0.1.0...otel-proxy@v0.1.1) (2025-05-14)
 
 

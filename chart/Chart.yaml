@@ -1,11 +1,9 @@
 apiVersion: v2
 name: hive-monitor
 description: Proxy/Otel/Prometheus Stack
-
 type: application
-appVersion: 0.1.1
+appVersion: 0.1.2
 version: 0.1.0
-
 dependencies:
   - name: prometheus
     repository: https://prometheus-community.github.io/helm-charts
