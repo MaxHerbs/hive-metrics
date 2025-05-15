@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: otel-proxy
+  namespace: {{ .Release.Namespace }}
+  {{- with $.Values.deployment.annotations }}
+  annotations:
+    {{- . | toYaml | nindent 4 }}
+  {{- end }}
+  labels:
+    {{- include "common.labels.standard" $ | nindent 4 }}
+spec:
+  replicas: {{ $.Values.deployment.replicas }}
+  selector:
+    matchLabels:
+      {{- include "common.labels.matchLabels" $ | nindent 6 }}
+  template:
+    metadata:
+      {{- with $.Values.deployment.podAnnotations }}
+      annotations:
+        {{- . | toYaml | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "common.labels.matchLabels" $ | nindent 8 }}
+    spec:
+      containers:
+        - name: otel-proxy
+          image: {{ include "common.images.image" ( dict "imageRoot" $.Values.image "global" $.Values.global "chart" $.Chart ) }}
+          imagePullPolicy: {{ $.Values.image.pullPolicy }}
+          # TODO: Correct this when releasing next version
+          command: ["/app/target/release/otel-proxy"]
+          args:
+            - serve
+          env:
+            - name: PORT 
+              value: "{{ $.Values.deployment.port }}"
+            - name: OTEL_URL
+              value: "{{ .Release.Namespace }}-opentelemetry-collector.{{ .Release.Namespace }}.svc.cluster.local"
+            - name: METRICS_CONFIG
+              value: '{{ $.Values.deployment.metricsConfig | toJson }}'
+          ports:
+            - name: otel-proxy
+              containerPort: 80
+              protocol: TCP
+          resources:
+            {{- $.Values.deployment.resources | toYaml | nindent 12 }}
+          {{- with $.Values.deployment.nodeSelector }}
+          nodeSelector:
+            {{- . | toYaml | nindent 8 }}
+          {{- end }}
+          {{- with $.Values.deployment.affinity }}
+          affinity:
+            {{- . | toYaml | nindent 8 }}
+          {{- end }}
+          {{- with $.Values.deployment.tolerations }}
+          tolerations:
+            {{- . | toYaml | nindent 8 }}
+          {{- end }}
