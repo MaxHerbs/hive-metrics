@@ -6,7 +6,7 @@ image:
 
 deployment:
   port: 80
-  otel_url: otel-collector.theoffice.uk
+  otel_url: http://otel.theoffice.uk/v1/metrics
   metricsConfig:
     - name: temperature
       unit: celsius
@@ -87,7 +87,7 @@ opentelemetry-collector:
     enabled: true
     ingressClassName: traefik
     hosts:
-      - host: otel-collector.theoffice.uk
+      - host: otel.theoffice.uk
         paths:
           - path: /
             pathType: Prefix
