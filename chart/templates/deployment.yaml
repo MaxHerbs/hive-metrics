@@ -34,7 +34,7 @@ spec:
             - name: PORT 
               value: "{{ $.Values.deployment.port }}"
             - name: OTEL_URL
-              value: "{{ .Release.Namespace }}-opentelemetry-collector.{{ .Release.Namespace }}.svc.cluster.local"
+              value: "{{ $.Values.deployment.otel_url }}"
             - name: METRICS_CONFIG
               value: '{{ $.Values.deployment.metricsConfig | toJson }}'
           ports:

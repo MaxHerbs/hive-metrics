@@ -6,6 +6,7 @@ image:
 
 deployment:
   port: 80
+  otel_url: otel-collector.theoffice.uk
   metricsConfig:
     - name: temperature
       unit: celsius
@@ -35,7 +36,7 @@ service:
 ingress:
   create: true
   className: traefik
-  host: aaaaaaaaaaaaaaaaaaaaaaa
+  host: otel-proxy.theoffice.uk
 
 
 opentelemetry-collector:
@@ -86,7 +87,7 @@ opentelemetry-collector:
     enabled: true
     ingressClassName: traefik
     hosts:
-      - host: aaaaaaaaaaaaaaaaa
+      - host: otel-collector.theoffice.uk
         paths:
           - path: /
             pathType: Prefix
@@ -106,4 +107,4 @@ prometheus:
       enabled: true
       ingressClassName: traefik
       hosts:
-        - aaaaaaaaaaaaaaaaaaaaaaa
+        - prometheus.theoffice.uk
