@@ -5,19 +5,25 @@
 #include <HTTPClient.h>
 #include <ConfigManager.h>
 #include <Settings.h>
+#include <TempSensor.h>
 
+TempSensor temp_sensor(ONE_WIRE_BUS_PIN);
 
 void wait_for_wifi();
 
 Config config;
 int64_t previousSeconds = 0;
 
+
 void setup() {
   Serial.begin(115200);
   Serial.println("Some text");
-  ConfigManager manager("/config.json", sdCsPin);
+  ConfigManager manager("/config.json", SD_PIN);
   config = manager.init();
   config.print();
+
+
+  temp_sensor.begin();
 
   WiFi.begin(config.ssid, config.password);
   wait_for_wifi();
@@ -49,11 +55,16 @@ void loop() {
   doc["id"] = config.id;
   doc["location"] = config.location;
 
+
+
   JsonObject metrics = doc.createNestedObject("metrics");
-  metrics["temperature"] = 12.2;
+  float temperature = temp_sensor.readTemperature();
+  metrics["temperature"] = temperature;
 
   String post_body;
   serializeJson(doc, post_body);
+  Serial.println("JSON to POST:");
+  Serial.println(post_body);
 
   int response = http.POST(post_body);
   Serial.print("Response Code:");

@@ -6,8 +6,9 @@
 #include <Arduino.h>
 
 
-#define UPDATE_FREQ 30
-#define sdCsPin 5
+#define UPDATE_FREQ 10
+#define SD_PIN 5
+#define ONE_WIRE_BUS_PIN 4
 
 inline void system_exit(char* message ) {
     Serial.println("Critical error:");
