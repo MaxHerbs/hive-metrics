@@ -3,19 +3,20 @@ mod telemetry;
 use std::{collections::HashMap, sync::Arc};
 use telemetry::{init_metrics, MetricFactory};
 
-use routes::log_metric;
+use routes::{health_check::health_check, log_metric};
 
 use axum::{
     extract::Request,
     http::HeaderMap,
-    middleware::{self, Next},
+    middleware::{from_fn, Next},
     response::Response,
-    routing::post,
+    routing::{get, post},
     Router,
 };
 use clap::Parser;
 
 use opentelemetry::metrics::{Gauge, MeterProvider};
+use tracing::*;
 
 /// Otel-Proxy entry point
 #[derive(Parser, Debug)]
@@ -43,43 +44,63 @@ struct ServeArgs {
 
 #[tokio::main]
 async fn main() {
+    tracing_subscriber::fmt::init();
     let cli = Cli::parse();
 
     match cli {
         Cli::Serve(args) => {
-            println!("Running on port: {}", args.port);
+            info!("Listening on port: {}", args.port);
 
             let meter_provider = init_metrics(&args);
             let meter = meter_provider.meter("otel-proxy");
             let metric_map = MetricFactory::create(&args, &meter);
+            debug!("Created metrics map:\n{:#?}", metric_map);
 
             let shared_state = Arc::new(AppState { metric_map });
+
             let router = build_router(shared_state);
 
             let path = format!("0.0.0.0:{}", &args.port);
             let listener = tokio::net::TcpListener::bind(path).await.unwrap();
-            println!("listening on {}", listener.local_addr().unwrap());
             axum::serve(listener, router).await.unwrap();
         }
     }
 }
 
 fn build_router(shared_state: Arc<AppState>) -> Router {
-    Router::new()
+    let metrics_router = Router::new()
         .route("/metrics", post(log_metric))
-        .route_layer(middleware::from_fn(my_middleware))
-        .with_state(shared_state)
+        .with_state(shared_state);
+
+    let health_router = Router::new().route("/healthz", get(health_check));
+
+    Router::new()
+        .merge(metrics_router)
+        .merge(health_router)
+        .layer(from_fn(incoming_requests))
 }
 
 struct AppState {
     metric_map: HashMap<String, Gauge<f64>>,
 }
 
-async fn my_middleware(headers: HeaderMap, request: Request, next: Next) -> Response {
-    println!("Headers:");
-    println!("{:?}", headers);
+async fn incoming_requests(_headers: HeaderMap, request: Request, next: Next) -> Response {
+    let method = request.method().clone();
+    let uri = request.uri().clone();
 
-    next.run(request).await
+    info!("Incoming request: {} {}", method, uri);
+    let response = next.run(request).await;
+
+    if !response.status().is_success() {
+        error!(
+            "Request failed: {} {} with code '{}'",
+            method,
+            uri,
+            response.status()
+        );
+    }
+
+    response
 }
 
 #[cfg(test)]

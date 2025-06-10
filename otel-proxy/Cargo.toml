@@ -17,3 +17,5 @@ opentelemetry-semantic-conventions = "0.29.0"
 serde_json = "1.0.140"
 reqwest = { version = "0.12.15", features = ["json"] }
 openssl = { version = "0.10", features = ["vendored"] }
+tracing = "0.1.41"
+tracing-subscriber = "0.3.19"
