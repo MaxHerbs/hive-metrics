@@ -6,6 +6,7 @@
 #include <Arduino.h>
 
 
+#define UPDATE_FREQ 30
 #define sdCsPin 5
 
 inline void system_exit(char* message ) {

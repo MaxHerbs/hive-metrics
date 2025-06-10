@@ -46,13 +46,13 @@ Config ConfigManager::loadConfig(char *configText) {
         system_exit("Failed to deserialise json");
     }
 
-    const char* requiredKeys[] = { "ssid", "password", "hostname" };
+    const char* requiredKeys[] = { "ssid", "password", "hostname", "id", "location" };
     const size_t numKeys = sizeof(requiredKeys) / sizeof(requiredKeys[0]);
 
     bool allKeysPresent = true;
 
     for (size_t i = 0; i < numKeys; i++) {
-        if (!json.is<const char*>()) {
+        if (json[requiredKeys[i]].isNull()) {
             Serial.print("Missing key: ");
             Serial.println(requiredKeys[i]);
             allKeysPresent = false;
@@ -66,8 +66,10 @@ Config ConfigManager::loadConfig(char *configText) {
 
     strlcpy(config.ssid, json["ssid"], sizeof(config.ssid));
     strlcpy(config.password, json["password"], sizeof(config.password));
+    strlcpy(config.hostname, json["hostname"], sizeof(config.hostname));
+    strlcpy(config.id, json["id"], sizeof(config.id));
+    strlcpy(config.location, json["location"], sizeof(config.location));
     return config;
-
 }
 
 char *ConfigManager::readFile(fs::FS &fs, const char *path) {
