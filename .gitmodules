@@ -4,3 +4,9 @@
 [submodule "hive-monitor/lib/ArduinoJson"]
 	path = hive-monitor/lib/ArduinoJson
 	url = https://github.com/bblanchon/ArduinoJson.git
+[submodule "hive-monitor/lib/OneWire"]
+	path = hive-monitor/lib/OneWire
+	url = https://github.com/PaulStoffregen/OneWire.git
+[submodule "hive-monitor/lib/Arduino-Temperature-Control-Library"]
+	path = hive-monitor/lib/Arduino-Temperature-Control-Library
+	url = https://github.com/milesburton/Arduino-Temperature-Control-Library.git
