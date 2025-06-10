@@ -12,7 +12,7 @@ deployment:
       description: Current temperature
     - name: humidity
       unit: percentage
-  replicas: 2
+  replicas: 1
   annotations: []
   podAnnotations: []
   resources:
