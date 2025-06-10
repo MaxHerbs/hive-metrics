@@ -14,6 +14,23 @@ struct Config {
     char ssid[64];
     char password[64];
     char hostname[128];
+
+    char id[32];
+    char location[32];
+
+    void print() const {
+        Serial.println("Config:");
+        Serial.print("  SSID: ");
+        Serial.println(ssid);
+        Serial.print("  Password: ");
+        Serial.println(password);
+        Serial.print("  Hostname: ");
+        Serial.println(hostname);
+        Serial.print("  ID: ");
+        Serial.println(id);
+        Serial.print("  Location: ");
+        Serial.println(location);
+    }
 };
 
 
@@ -23,7 +40,6 @@ public:
 
     Config init();
     char* readFile(fs::FS &fs, const char *path);
-
 
     JsonDocument json;
 
