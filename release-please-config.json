@@ -16,6 +16,9 @@
           "jsonpath": "$.appVersion"
         }
       ]
+    },
+    "hive-monitor": {
+      "release-type": "simple"
     }
   }
 }
