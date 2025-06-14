@@ -18,7 +18,8 @@
       ]
     },
     "hive-monitor": {
-      "release-type": "simple"
+      "release-type": "simple",
+      "package-name": "hive-monitor"
     }
   }
 }
