@@ -1,3 +1,4 @@
 {
-  "otel-proxy": "0.1.2"
+  "otel-proxy": "0.1.2",
+  "hive-monitor": "0.1.0"
 }
