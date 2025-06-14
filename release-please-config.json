@@ -9,6 +9,7 @@
   "packages": {
     "otel-proxy": {
       "release-type": "rust",
+      "package-name": "otel-proxy",
       "extra-files": [
         {
           "type": "yaml",
@@ -18,7 +19,8 @@
       ]
     },
     "hive-monitor": {
-      "release-type": "simple"
+      "release-type": "simple",
+      "package-name": "hive-monitor"
     }
   }
 }
