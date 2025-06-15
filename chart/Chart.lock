@@ -8,5 +8,8 @@ dependencies:
 - name: common
   repository: oci://docker.io/bitnamicharts
   version: 2.23.0
-digest: sha256:0fdcd5906add107f0f3e4da66732a23f634ca330c32522e8426968b759333d14
-generated: "2025-06-10T21:26:02.107197468+01:00"
+- name: grafana
+  repository: https://grafana.github.io/helm-charts
+  version: 8.10.1
+digest: sha256:a2011210835948adbc541bd65c6a2ea56bd9bfb1a239c87bb29116e052ad0cb0
+generated: "2025-06-15T16:39:46.615611907+01:00"
