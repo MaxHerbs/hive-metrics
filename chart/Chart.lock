@@ -1,12 +1,15 @@
 dependencies:
 - name: prometheus
   repository: https://prometheus-community.github.io/helm-charts
-  version: 25.30.1
+  version: 27.4.0
 - name: opentelemetry-collector
   repository: https://open-telemetry.github.io/opentelemetry-helm-charts
   version: 0.114.0
 - name: common
   repository: oci://docker.io/bitnamicharts
   version: 2.23.0
-digest: sha256:0fdcd5906add107f0f3e4da66732a23f634ca330c32522e8426968b759333d14
-generated: "2025-06-10T21:26:02.107197468+01:00"
+- name: grafana
+  repository: https://grafana.github.io/helm-charts
+  version: 8.10.1
+digest: sha256:8e99a9ee1e2ad63ace3b046b36fa67abba32b0824da82f3d485971c0a7ef8766
+generated: "2025-07-02T00:06:22.94191996+01:00"

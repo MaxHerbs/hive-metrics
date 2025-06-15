@@ -1,0 +1,154 @@
+{
+  "id": null,
+  "uid": "hive-metrics",
+  "title": "Hive Metrics",
+  "tags": [
+    "temperature",
+    "humidity"
+  ],
+  "timezone": "browser",
+  "schemaVersion": 36,
+  "version": 3,
+  "refresh": "30s",
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "templating": {
+    "list": [
+      {
+        "name": "id",
+        "type": "query",
+        "datasource": "Prometheus",
+        "query": "label_values(temperature_celsius, id)",
+        "refresh": 1,
+        "includeAll": true,
+        "multi": true,
+        "hide": 0
+      },
+      {
+        "name": "location",
+        "type": "query",
+        "datasource": "Prometheus",
+        "query": "label_values(temperature_celsius{id=~\"$id\"}, location)",
+        "refresh": 1,
+        "includeAll": true,
+        "multi": true,
+        "hide": 0
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1,
+      "title": "Temperature (°C)",
+      "type": "graph",
+      "datasource": "Prometheus",
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 9
+      },
+      "targets": [
+        {
+          "expr": "temperature_celsius{id=~\"$id\", location=~\"$location\"}",
+          "refId": "A",
+          "legendFormat": "{{id}}"
+        }
+      ],
+      "lines": true,
+      "linewidth": 2,
+      "points": false,
+      "fill": 1,
+      "nullPointMode": "null",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "xaxis": {
+        "mode": "time",
+        "show": true
+      },
+      "yaxis": {
+        "format": "celsius",
+        "show": true
+      }
+    },
+    {
+      "id": 2,
+      "title": "Humidity (%)",
+      "type": "graph",
+      "datasource": "Prometheus",
+      "gridPos": {
+        "x": 12,
+        "y": 0,
+        "w": 12,
+        "h": 9
+      },
+      "targets": [
+        {
+          "expr": "humidity_percent{id=~\"$id\", location=~\"$location\"}",
+          "refId": "A",
+          "legendFormat": "{{id}}"
+        }
+      ],
+      "lines": true,
+      "linewidth": 2,
+      "points": false,
+      "fill": 1,
+      "nullPointMode": "null",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "xaxis": {
+        "mode": "time",
+        "show": true
+      },
+      "yaxis": {
+        "format": "percent",
+        "show": true
+      }
+    },
+    {
+      "id": 3,
+      "title": "Ambient Temperature (°C)",
+      "type": "graph",
+      "datasource": "Prometheus",
+      "gridPos": {
+        "x": 0,
+        "y": 9,
+        "w": 24,
+        "h": 9
+      },
+      "targets": [
+        {
+          "expr": "ambient_temperature_celsius{id=~\"$id\", location=~\"$location\"}",
+          "refId": "A",
+          "legendFormat": "{{id}}"
+        }
+      ],
+      "lines": true,
+      "linewidth": 2,
+      "points": false,
+      "fill": 1,
+      "nullPointMode": "null",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "xaxis": {
+        "mode": "time",
+        "show": true
+      },
+      "yaxis": {
+        "format": "none",
+        "show": true
+      }
+    }
+  ]
+}
