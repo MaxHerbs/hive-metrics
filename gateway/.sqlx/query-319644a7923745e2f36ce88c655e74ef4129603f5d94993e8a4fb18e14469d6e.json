@@ -1,0 +1,23 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n        SELECT EXISTS (\n            SELECT 1\n            FROM user_devices\n            JOIN devices ON user_devices.device_id = devices.id\n            WHERE user_devices.user_id = $1 AND devices.device_id = $2\n        )\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "exists",
+        "type_info": "Bool"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Uuid",
+        "Text"
+      ]
+    },
+    "nullable": [
+      null
+    ]
+  },
+  "hash": "319644a7923745e2f36ce88c655e74ef4129603f5d94993e8a4fb18e14469d6e"
+}
