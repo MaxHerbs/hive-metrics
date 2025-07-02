@@ -1,2 +1,5 @@
 # Helm charts
 *.tgz
+
+# Rust build
+**/target

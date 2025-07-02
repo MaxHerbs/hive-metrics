@@ -1,0 +1,35 @@
+services:
+  gateway:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./..:/workspace:cached,z
+    command: sleep infinity
+    environment:
+    - PROMETHEUS_URL=http://prometheus:9090
+    - DATABASE_HOSTNAME=postgres
+    - DATABASE_USER=postgres
+    - DATABASE_PASSWORD=rootpassword
+    - DATABASE_NAME=dev
+
+  prometheus:
+    image: quay.io/prometheus/prometheus:v3.1.0
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./../:/workspace
+    command: "--config.file=/workspace/.devcontainer/prometheus.yml"
+
+  fake_exporter:
+    build:
+      context: ./fake_exporter
+    expose:
+      - "9000"
+
+  postgres:
+    image: docker.io/library/postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: rootpassword
