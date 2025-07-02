@@ -1,9 +1,8 @@
 services:
   otel-proxy:
     build:
-      context: ..
+      context: .
       dockerfile: ./Dockerfile
-      target: build
     volumes:
       - ./..:/workspace:cached,z
     command: sleep infinity
