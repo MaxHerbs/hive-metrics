@@ -1,0 +1,38 @@
+name: gateway code
+
+on:
+  workflow_call:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4.2.2
+
+      - name: Install stable toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1.12.0
+        with:
+          cache: false
+          components: clippy,rustfmt
+
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ./gateway/target
+          key: rust-lint
+
+      - name: Check Formatting
+        working-directory: gateway
+        run: >
+          cargo fmt
+          --all
+          --check
+
+      - name: Lint with Clippy
+        working-directory: gateway
+        run: >
+          cargo clippy
+          --all-targets
+          --all-features
+          --no-deps
