@@ -1,0 +1,13 @@
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: gateway-sso
+  namespace: hive
+spec:
+  encryptedData:
+    secret: AgDIdt/t3gpRHDlNDJ70gv/xob0cJ3Ybc69y9JxFhGfLVlhm3ohfEB0yKDWTaIkAcB/SljYKMoye8TVXUkGUdZpaGWtPguPcNsnbpi+17HTjVD9YtYGGQ+G4wRpOyZvV0+pGRuIAQqD8xcMbLKqsJMOq2Up2jarVJbN1qmpREhfX7tK7MywcBxNVkTY7T61gWkyX7W6eZDrMhJu40/7recq4jk3w++IxArk4UsgdE8lgCpI9IGc+UoI1aJBsSlgiYZrwLqUcNbdkskH764bwsD7GeMiHruv3kYO3+6h32b1TaxBW2ijfarSLCBiwk4BCXF11EidQQMKM0YkoqUU8Z9nWhvt4czONqpLRhIgWPVULGteHpMVMJ+PsNnaa67/C07Q2IRkGFvs0tNCticI3tkApq40d18W8D+E02P3MCEOoVLMTIsdAzMD/wF0SXdG9u5F86p9u+G807aeYeyMRVJ806/fRcBrB3gK7E5cDh4DzDfi/Byulb3ebbWtlYbEitUJp4tYrZcK025wbzAdfRozWXao0527HpZqg6FURO0D2rQxCZTmOSgoY6pF6iaM7Kn50iaDzN5kVnn4elAJrH+5n7/V703kcY1aY64dza79vm9EpqGcOchABt4u3eU1fuZLbJiJ6QIQ2u1UCVIEkL4pzGAK2l6ZXEr672H43bv8w4OIXYDNflt0COh/BQYi2wqzCdcZcZ/48BaocVnkmAhvv2FWFwY4zgoKAtBc+RHHx1A==
+  template:
+    metadata:
+      name: gateway-sso
+      namespace: hive
+    type: Opaque

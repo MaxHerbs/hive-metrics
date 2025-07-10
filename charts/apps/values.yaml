@@ -14,3 +14,9 @@ otelProxy:
   targetRevision: HEAD
   extraValuesFiles: []
   valuesObject: {}
+
+gateway:
+  enabled: true
+  targetRevision: HEAD
+  extraValuesFiles: []
+  valuesObject: {}
