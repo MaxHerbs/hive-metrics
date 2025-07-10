@@ -1,0 +1,16 @@
+destination:
+  server: https://kubernetes.default.svc
+  namespace: hive
+  project: default
+
+hiveMetrics:
+  enabled: true
+  targetRevision: HEAD
+  extraValuesFiles: []
+  valuesObject: {}
+
+otelProxy:
+  enabled: true
+  targetRevision: HEAD
+  extraValuesFiles: []
+  valuesObject: {}

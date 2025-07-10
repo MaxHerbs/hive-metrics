@@ -1,0 +1,29 @@
+{{- if .Values.hiveMetrics.enabled }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hive-metrics
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  destination:
+    namespace: {{ .Values.destination.namespace }}
+    server: {{ .Values.destination.server }}
+  project: {{ .Values.destination.project }}
+  source:
+    repoURL: https://github.com/maxherbs/hive-metrics
+    path: charts/hive-metrics
+    targetRevision: {{ .Values.hiveMetrics.targetRevision }}
+    helm:
+      valueFiles:
+        - values.yaml
+      {{- if .Values.hiveMetrics.valuesObject }}
+      valuesObject:
+        {{- .Values.hiveMetrics.valuesObject | toYaml | nindent 8 }}
+      {{- end }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+{{- end }}

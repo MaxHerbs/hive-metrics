@@ -1,0 +1,29 @@
+{{- if .Values.otelProxy.enabled }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: otel-proxy
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  destination:
+    namespace: {{ .Values.destination.namespace }}
+    server: {{ .Values.destination.server }}
+  project: {{ .Values.destination.project }}
+  source:
+    repoURL: https://github.com/maxherbs/hive-metrics
+    path: charts/otel-proxy
+    targetRevision: {{ .Values.otelProxy.targetRevision }}
+    helm:
+      valueFiles:
+        - values.yaml
+      {{- if .Values.otelProxy.valuesObject }}
+      valuesObject:
+        {{- .Values.otelProxy.valuesObject | toYaml | nindent 8 }}
+      {{- end }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+{{- end }}
