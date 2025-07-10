@@ -1,9 +1,10 @@
 apiVersion: v2
-name: hive-monitor
-description: Proxy/Otel/Prometheus Stack
+name: hive-metrics
+description: Central deployment for metrics platform
 type: application
-appVersion: 0.1.3
+
 version: 0.1.0
+
 dependencies:
   - name: prometheus
     repository: https://prometheus-community.github.io/helm-charts
@@ -11,9 +12,6 @@ dependencies:
   - name: opentelemetry-collector
     repository: https://open-telemetry.github.io/opentelemetry-helm-charts
     version: 0.114.0
-  - name: common
-    version: 2.23.0
-    repository: oci://docker.io/bitnamicharts
   - name: grafana
     version: 8.10.1
     repository: https://grafana.github.io/helm-charts

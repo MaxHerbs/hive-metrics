@@ -1,0 +1,62 @@
+replicaCount: 1
+
+otel_endpoint: "http://hive-metrics-opentelemetry-collector.hive.svc.cluster.local:4318/v1/metrics"
+metricsConfig:
+  - name: temperature
+    unit: celsius
+    description: Current temperature
+  - name: humidity
+    unit: percentage
+
+image:
+  registry: ghcr.io
+  repository: maxherbs/hive-metrics-otel-proxy
+  tag: ""
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+podAnnotations: {}
+podLabels: {}
+podSecurityContext: {}
+
+securityContext: {}
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  className: traefik
+  annotations: {}
+  hosts:
+    - host: hive-proxy.theoffice.uk
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+livenessProbe:
+  httpGet:
+    path: /healthz
+    port: http
+readinessProbe:
+  httpGet:
+    path: /healthz
+    port: http
+
+volumes: []
+volumeMounts: []
+tolerations: []
+affinity: {}
