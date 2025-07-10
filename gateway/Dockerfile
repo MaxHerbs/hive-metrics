@@ -14,3 +14,4 @@ FROM gcr.io/distroless/cc-debian12@sha256:eccec5274132c1be0ce5d2c8e6fe41033e64af
 COPY --from=build /app/target/release/gateway /gateway
 
 ENTRYPOINT ["/gateway"]
+CMD ["serve"]
