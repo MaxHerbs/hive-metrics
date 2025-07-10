@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.3](https://github.com/MaxHerbs/hive-metrics/compare/otel-proxy@v0.1.2...otel-proxy@v0.1.3) (2025-07-10)
+
+
+### Features
+
+* **gateway:** initial commit ([959b8ea](https://github.com/MaxHerbs/hive-metrics/commit/959b8ea70f4ab55d2deec99f78bd5367761c5ad4))
+* **proxy:** healthz route ([7dd5000](https://github.com/MaxHerbs/hive-metrics/commit/7dd500031a992cbdc71e8cd7f3d89563a0822047))
+
 ## [0.1.2](https://github.com/MaxHerbs/hive-metrics/compare/otel-proxy@v0.1.1...otel-proxy@v0.1.2) (2025-05-15)
 
 
