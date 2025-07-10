@@ -1,0 +1,26 @@
+{{/* apiVersion: v1 */}}
+{{/* kind: Secret */}}
+{{/* metadata: */}}
+{{/*   name: postgres-config */}}
+{{/* type: Opaque */}}
+{{/* data: */}}
+{{/*   password: {{ include "gateway.password" . | b64enc | quote }} */}}
+{{/*   postgres-password: {{ include "gateway.postgresPassword" . | b64enc | quote }} */}}
+{{/**/}}
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: postgres-config
+  namespace: hive
+spec:
+  encryptedData:
+    password: AgDFQZJuyoFQpKJ0mtxD08WxMnmLGLuv+vM1LWrZhvvzekInHT68UQkJx05XxYjYRpZ5XU/G1VXVMgEkr3RNnHhSFnX1CQIGoXt5JsCOQbk1FOBpa3L48FsGi2FvqZu1f828ubrcvnbnF1uT9afScc3fyGNXOAmyjynzJeeaiZPT9i8s8j+p346BwvB/jV1dMSbzRsz0980+Jr20dMPwz3nW+wPBJocgxIrXtLyodVWfTxBpUngG8WyArsfAJthtfXaJjFWc4oZlM46Y1jpt5B1MkzBZB6SmdnQGX+DCj2J+HJGzwMYGS6HNnuCZAgHIwVE6w2s4ZkGgAq042BIQVqoMTD0xyq92eV/EReVbdChv09moaxNAOtZFYc0H0GHfgmg8L3PuaRrfCjL1D/3OB+QAqbvVA/lb42zaiLWoBolMEh7xXDpIjVrX0KdXgJ6DXKWTNY6RWTDldglmWnLLF5AjmgZPquT2LrIHJcOewQm3izD6xOI75k2NUgSfVlMZbgzVR7Piqbrmp75GVkj/Rza8n0w63kDch8ywWu443SnL8kpY97OqhV3uhAPLn3ZBlG6pWagZ6M6rAL5t/kVyrpfwcUdnQdWCxHedfHbI9+fAI9JCks3Nyte0QJQ4HVzSiTT/KQZjh5XVFcyEURIxUxcEs7f6UnfJduOInwa4jPW9CNBqbJZQdZyI7GB/5d9BQmY/Vu++BEcj1eU/G7r73LOlBzhpeGmMNP4=
+    postgres-password: AgBYhT1228fZk4S6EoYN6B6t97hwGkaxi3hK61heNgdC/GFmDe07bvlJKYXvJdPaVZf8lqkWRtql/OtMkM1qZBvDDb4ksa8d1FkLLTN4A8qotxyihuWI76U5TVIgjmscx4HhI/FW4PoUiTaphzizXDcOUYdd6/jIFmeDQ8dj6vKFMxrUdGtQrUuMgVoSfUk9luITgV9Lzt3V/kGGStT5c5Z7W7FVWeyAdhKZy5+QJLSUpuK451GrvZpxR/6WNyorkfWeDq80f1XeIHTUULdVRYmlbiimZ+sygj8OampF/OiklmhpDb1+BBBv3utNq7pq0fxkHYGFVjLvOe20c6GUmDxdOfPHrPGLjdCPydNQJ+0AVWWn8/VcuVibDzx0TUge/cJXOxp1FGMuDxnoaYT1zVjDRIAQ+po13craWU7a15hY9hg2Eaby85mxevVTMXQWGqbKXX+Lb9suTpJJmac1rrdDKWuzO5BL1cmuWu9aeCg++E0JPd3+dlvzflbcAUgPcVBD2DAPteerpsEO7O34b896EdfKH9OzgIVYdQsFHRRMuzGIf1cV9ac1R50lzwx/s6t53IC9+t3sD8B6lgwmIba86C09Zlm+IC12MoUnx9SSqZMYQd+9ZAXT7QzUN9UBeXWELMykjtUkv/LVr42Wtwz3Grf32wZOsR8kmmZxA3xvMksH5bE2FuMKsT3Y38dH0gxBVpWrm8Mn0HSSrfQTUMq7roCQx1dfx54=
+  template:
+    metadata:
+      annotations:
+        argocd.argoproj.io/tracking-id: gateway:/Secret:hive/postgres-config
+      name: postgres-config
+      namespace: hive
+    type: Opaque

@@ -1,0 +1,65 @@
+replicaCount: 1
+
+prometheus_url: "http://hive-metrics-prometheus-server.hive.svc.cluster.local:80"
+
+image:
+  registry: ghcr.io
+  repository: maxherbs/hive-metrics-gateway
+  pullPolicy: IfNotPresent
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+podAnnotations: {}
+podLabels: {}
+podSecurityContext: {}
+securityContext: {}
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  className: traefik
+  annotations: {}
+  hosts:
+    - host: gateway-local.theoffice.uk
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+livenessProbe:
+  httpGet:
+    path: /healthz
+    port: http
+readinessProbe:
+  httpGet:
+    path: /healthz
+    port: http
+
+volumes: []
+volumeMounts: []
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+postgresql:
+  enabled: true
+  auth:
+    existingSecret: postgres-config
+    secretKeys: 
+      adminPasswordKey: postgres-password
+      userPasswordKey: password
+
