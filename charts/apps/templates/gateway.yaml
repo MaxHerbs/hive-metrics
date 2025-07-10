@@ -1,0 +1,29 @@
+{{- if .Values.gateway.enabled }}
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gateway
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  destination:
+    namespace: {{ .Values.destination.namespace }}
+    server: {{ .Values.destination.server }}
+  project: {{ .Values.destination.project }}
+  source:
+    repoURL: https://github.com/maxherbs/hive-metrics
+    path: charts/gateway
+    targetRevision: {{ .Values.gateway.targetRevision }}
+    helm:
+      valueFiles:
+        - values.yaml
+      {{- if .Values.gateway.valuesObject }}
+      valuesObject:
+        {{- .Values.gateway.valuesObject | toYaml | nindent 8 }}
+      {{- end }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+{{- end }}

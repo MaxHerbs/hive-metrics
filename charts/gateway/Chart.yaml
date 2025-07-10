@@ -1,0 +1,18 @@
+apiVersion: v2
+name: gateway
+description: Data gatway sevice
+type: application
+
+version: 0.1.0
+appVersion: "latest"
+
+dependencies:
+  - name: postgresql
+    repository: oci://docker.io/bitnamicharts
+    version: 16.7.17
+    condition: postgresql.enabled
+  - name: oauth2-proxy
+    repository: https://oauth2-proxy.github.io/manifests
+    version: 7.8.0
+    condition: oauth2-proxy.enabled
+

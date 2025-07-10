@@ -1,0 +1,130 @@
+replicaCount: 1
+
+prometheusUrl: "http://hive-metrics-prometheus-server.hive.svc.cluster.local:80"
+database: prod
+databaseUser: postgres
+databaseHostname: gateway-postgresql
+
+image:
+  registry: ghcr.io
+  repository: maxherbs/hive-metrics-gateway
+  pullPolicy: IfNotPresent
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+podAnnotations: {}
+podLabels: {}
+podSecurityContext: {}
+securityContext: {}
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  className: traefik
+  annotations: {}
+  hosts:
+    - host: gateway-local.theoffice.uk
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+livenessProbe:
+  httpGet:
+    path: /healthz
+    port: http
+readinessProbe:
+  httpGet:
+    path: /healthz
+    port: http
+
+volumes: []
+volumeMounts: []
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+postgresql:
+  enabled: true
+  auth:
+    existingSecret: postgres-config
+    secretKeys: 
+      adminPasswordKey: postgres-password
+      userPasswordKey: password
+
+oauth2-proxy:
+  enabled: true
+  replicaCount: 1
+  ingress:
+    enabled: true
+    pathType: Prefix
+    hosts:
+      - gateway.theoffice.uk
+    path: /
+  config:
+    configFile: |-
+      email_domains = [
+        "*"
+      ]
+      skip_provider_button = true
+  alphaConfig:
+    enabled: true
+    configFile: |-
+      upstreamConfig:
+        upstreams:
+          - id: gateway
+            path: /
+            uri: http://gateway:80
+    configData:
+      injectRequestHeaders:
+        - name: X-User-ID
+          values:
+            - claim: sub
+        - name: x-auth-request-user
+          values:
+            - claim: email
+      injectResponseHeaders:
+        - name: Identity
+          values:
+            - claim: id_token
+
+      providers:
+        - provider: oidc
+          scope: "openid"
+          clientId: gateway
+          clientSecretFile: /etc/alpha/secret
+          id: authn
+          oidcConfig:
+            issuerURL: https://authn.theoffice.uk/realms/master
+            insecureAllowUnverifiedEmail: true
+            audienceClaims:
+              - aud
+            emailClaim: email
+  extraArgs:
+    - --cookie-refresh=55s
+  extraVolumes:
+    - name: secret
+      secret:
+        secretName: gateway-sso
+        items:
+          - key: secret
+            path: secret
+  extraVolumeMounts:
+    - name: secret
+      mountPath: /etc/alpha
+      readOnly: true
+
