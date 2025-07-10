@@ -27,3 +27,4 @@ FROM scratch AS runtime
 COPY --from=build /app/target/x86_64-unknown-linux-musl/release/otel-proxy /otel-proxy
 
 ENTRYPOINT ["/otel-proxy"]
+CMD ["serve"]
