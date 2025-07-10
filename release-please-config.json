@@ -12,10 +12,13 @@
       "extra-files": [
         {
           "type": "yaml",
-          "path": "/chart/Chart.yaml",
+          "path": "/charts/otel-proxy/Chart.yaml",
           "jsonpath": "$.appVersion"
         }
       ]
+    },
+    "gateway": {
+      "release-type": "rust"
     },
     "hive-monitor": {
       "release-type": "simple",
