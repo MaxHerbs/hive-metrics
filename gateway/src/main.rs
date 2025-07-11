@@ -77,11 +77,11 @@ fn build_router(shared_state: Arc<AppState>) -> Router {
         .route("/query_range", get(query_range_handler))
         .with_state(shared_state);
 
-    // let health_router = Router::new().route("/healthz", get(health_check));
+    let health_router = Router::new().route("/healthz", get(health_check));
 
     Router::new()
         .merge(query)
-        // .merge(health_router)
+        .merge(health_router)
         .layer(from_fn(incoming_requests))
 }
 
@@ -109,6 +109,6 @@ async fn incoming_requests(_headers: HeaderMap, request: Request, next: Next) ->
     response
 }
 
-pub fn healtz() -> impl IntoResponse {
+pub async fn health_check() -> impl IntoResponse {
     StatusCode::OK
 }
