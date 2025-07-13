@@ -10,3 +10,6 @@
 [submodule "hive-monitor/lib/Arduino-Temperature-Control-Library"]
 	path = hive-monitor/lib/Arduino-Temperature-Control-Library
 	url = https://github.com/milesburton/Arduino-Temperature-Control-Library.git
+[submodule "hive-monitor/lib/TaskScheduler"]
+	path = hive-monitor/lib/TaskScheduler
+	url = https://github.com/arkhipenko/TaskScheduler.git

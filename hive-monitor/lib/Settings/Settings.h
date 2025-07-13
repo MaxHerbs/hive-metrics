@@ -6,7 +6,7 @@
 #include <Arduino.h>
 
 
-#define UPDATE_FREQ 10
+#define METRICS_PERIOD 10000
 #define SD_PIN 5
 #define ONE_WIRE_BUS_PIN 4
 
