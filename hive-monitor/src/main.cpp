@@ -16,9 +16,12 @@ Config config;
 int64_t previousSeconds = 0;
 
 
+String auth_token = "";
 
 void sendMetricsCallback();
+void authenticationCallback();
 Task metrics(METRICS_PERIOD, TASK_FOREVER, &sendMetricsCallback);
+Task authentication(AUTHENTICATION_PERIOD, TASK_FOREVER, &sendMetricsCallback);
 Scheduler runner;
 
 
@@ -34,9 +37,12 @@ void setup() {
 
   WiFi.begin(config.ssid, config.password);
   wait_for_wifi();
+  authenticationCallback();
 
   runner.addTask(metrics);
+  runner.addTask(authentication);
   metrics.enable();
+  authentication.enable();
 }
 
 void loop() {
@@ -62,18 +68,26 @@ void wait_for_wifi() {
 
 
 void sendMetricsCallback() {
-  WiFiClient client;
+  if (auth_token == "") {
+    Serial.println("Auth token was null. Skipping submisson");
+    return;
+  }
+
+  WiFiClientSecure secureClient;
   HTTPClient http;
+  secureClient.setCACert(root_cert);
 
-  http.begin(client, config.hostname);
+  if (!http.begin(secureClient, config.hostname)) {
+    Serial.println("[TELEMETRY] Unable to connect");
+    return;
+  }
   http.addHeader("Content-Type", "application/json");
-
+  String auth = "Bearer :" + auth_token;
+  http.addHeader("Authorization", auth);
 
   JsonDocument doc;
   doc["id"] = config.id;
   doc["location"] = config.location;
-
-
 
   JsonObject metrics = doc.createNestedObject("metrics");
   float temperature = temp_sensor.readTemperature();
@@ -88,5 +102,46 @@ void sendMetricsCallback() {
   Serial.print("Response Code:");
   Serial.println(response);
 
+  http.end();
+}
+
+void authenticationCallback() {
+  WiFiClientSecure secureClient;
+  HTTPClient http;
+  secureClient.setCACert(root_cert);
+
+  if (!http.begin(secureClient, config.auth_endpoint)) {
+    Serial.println("[AUTH] Unable to connect");
+    return;
+  }
+
+  http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+
+  String postData =
+      "grant_type=client_credentials"
+      "&client_id=" + String(config.client) +
+      "&client_secret=" + String(config.client_secret);
+
+  Serial.println("Requesting new auth token");
+  int response_code = http.POST(postData);
+
+  if (response_code != 200) {
+    Serial.printf("[AUTH] Request failed, error: %s\n", http.errorToString(response_code).c_str());
+    auth_token = "";
+    return;
+  }
+
+  Serial.printf("[AUTH] Response code: %d\n", response_code);
+  String response_body = http.getString();
+  Serial.println("[AUTH] Token response:");
+  JsonDocument json;
+  DeserializationError error = deserializeJson(json, response_body);
+  if (error) {
+    auth_token = "";
+    Serial.println(error.f_str());
+    return;
+  }
+
+  auth_token = json["access_token"].as<String>();
   http.end();
 }

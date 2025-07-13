@@ -46,7 +46,7 @@ Config ConfigManager::loadConfig(char *configText) {
         system_exit("Failed to deserialise json");
     }
 
-    const char* requiredKeys[] = { "ssid", "password", "hostname", "id", "location" };
+    const char* requiredKeys[] = { "ssid", "password", "hostname", "id", "location", "client", "client_secret", "auth_endpoint" };
     const size_t numKeys = sizeof(requiredKeys) / sizeof(requiredKeys[0]);
 
     bool allKeysPresent = true;
@@ -69,6 +69,9 @@ Config ConfigManager::loadConfig(char *configText) {
     strlcpy(config.hostname, json["hostname"], sizeof(config.hostname));
     strlcpy(config.id, json["id"], sizeof(config.id));
     strlcpy(config.location, json["location"], sizeof(config.location));
+    strlcpy(config.auth_endpoint, json["auth_endpoint"], sizeof(config.auth_endpoint));
+    strlcpy(config.client, json["client"], sizeof(config.client));
+    strlcpy(config.client_secret, json["client_secret"], sizeof(config.client_secret));
     return config;
 }
 
