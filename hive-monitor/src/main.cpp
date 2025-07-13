@@ -21,7 +21,7 @@ String auth_token = "";
 void sendMetricsCallback();
 void authenticationCallback();
 Task metrics(METRICS_PERIOD, TASK_FOREVER, &sendMetricsCallback);
-Task authentication(AUTHENTICATION_PERIOD, TASK_FOREVER, &sendMetricsCallback);
+Task authentication(AUTHENTICATION_PERIOD, TASK_FOREVER, &authenticationCallback);
 Scheduler runner;
 
 
