@@ -15,6 +15,10 @@ struct Config {
     char password[64];
     char hostname[128];
 
+    char auth_endpoint[128];
+    char client[64];
+    char client_secret[64];
+
     char id[32];
     char location[32];
 
@@ -30,6 +34,10 @@ struct Config {
         Serial.println(id);
         Serial.print("  Location: ");
         Serial.println(location);
+        Serial.print("  Auth Endpoint: ");
+        Serial.println(auth_endpoint);
+        Serial.print("  Client: ");
+        Serial.println(client);
     }
 };
 
