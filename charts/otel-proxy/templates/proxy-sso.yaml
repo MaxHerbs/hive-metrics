@@ -1,0 +1,13 @@
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: proxy-sso
+  namespace: hive
+spec:
+  encryptedData:
+    secret: AgAKaDu71gJPARrh3AUKPAzIw7mmmtJFQFaMjGYH8fJU3he8DAFAn2Oxou0ymCjmOGVrxpTJhC7GnuybouH+HKsTpmqNhz7FCdo2nU0Y83L4J/+AzYcZv26mPrBt2sMHrqGF0GQW/tyYYgZNMXzMgJOJgCXS9iaCyh2zsTh4bRLy/ibJqOAZjtge3AQs1hztu71VbtJbal0Ci6KMeiVXhFSKyTHl3VMdxWmKv2grTdyuB72Kvx5Mz9Ukr8vD2dry06VHvx6YRYxRINFxvdXIcQo9WfruuG+rNlr2EjR6vhzxvV8q9IEO1AU97bHcPAsxM3B/v8CWlsLUwPvar7x643KarFbwc1RE1z1U7r+D7MZj02d22maTqYmZcRWTVRijVp/qvCIHG4lisg3q51XNaIwedP/DbiynfGk6jdkJXFcRLU8+A4ba+kQAM8H8nI/yZYdFoFfYrBOYJsq8FA8umfiWrGFBsqjh7JeUON5GCzxRp4kQU+6hyg1rW0x2PdvwDlVR0l/irVoH2VXvfaTW1xtUpvok0/NolSUdZsjuLkGcRzXoh/DUCk7CpIn5oI+J4FWZkcirOp7RTjSPKu9ftw2HRt06Yn732jvISHx9ixHZ8wlVPsSNQAPZZAEHSP3vlNTSGxPfCB1N5Vug3re+vaOiE85TRWCoeAMsEJgWmGOHniuI4gAs99L5ffxonTsQPNew4SBtNHXg0sZZEfYbHIpRl5YJ0zGXoMNQ0nkWHRD9dQ==
+  template:
+    metadata:
+      name: proxy-sso
+      namespace: hive
+    type: Opaque

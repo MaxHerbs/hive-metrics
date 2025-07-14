@@ -60,3 +60,59 @@ volumes: []
 volumeMounts: []
 tolerations: []
 affinity: {}
+
+
+oauth2-proxy:
+  enabled: true
+  replicaCount: 1
+  ingress:
+    enabled: true
+    pathType: Prefix
+    hosts:
+      - proxy.theoffice.uk
+    path: /
+  config:
+    configFile: |-
+      email_domains = [
+        "*"
+      ]
+      skip_provider_button = true
+  alphaConfig:
+    enabled: true
+    configFile: |-
+      upstreamConfig:
+        upstreams:
+          - id: gateway
+            path: /
+            uri: http://otel-proxy:80
+    configData:
+      injectRequestHeaders:
+        - name: X-Client-ID
+          values:
+            - claim: azp
+      providers:
+        - provider: oidc
+          scope: "openid"
+          clientId: proxy
+          clientSecretFile: /etc/alpha/secret
+          id: authn
+          oidcConfig:
+            issuerURL: https://authn.theoffice.uk/realms/master
+            insecureAllowUnverifiedEmail: true
+            audienceClaims:
+              - aud
+            emailClaim: email
+  extraArgs:
+    - --cookie-refresh=55s
+  extraVolumes:
+    - name: secret
+      secret:
+        secretName: proxy-sso
+        items:
+          - key: secret
+            path: secret
+  extraVolumeMounts:
+    - name: secret
+      mountPath: /etc/alpha
+      readOnly: true
+
