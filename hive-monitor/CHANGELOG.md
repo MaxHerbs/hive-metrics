@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.1](https://github.com/MaxHerbs/hive-metrics/compare/hive-monitor@v0.1.0...hive-monitor@v0.1.1) (2025-07-14)
+
+
+### Features
+
+* **controller:** Add auth header to metrics request ([2178a85](https://github.com/MaxHerbs/hive-metrics/commit/2178a8571e060c0309cb44c7051ae1adcb1dde59))
+
+
+### Bug Fixes
+
+* **controller:** fix incorrectly called function ([b59077b](https://github.com/MaxHerbs/hive-metrics/commit/b59077bb8536480a8fc07bf306f73a1eea86dad6))
+
 ## 0.1.0 (2025-06-14)
 
 
