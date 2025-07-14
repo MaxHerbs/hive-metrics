@@ -2,6 +2,5 @@ apiVersion: v2
 name: otel-proxy
 description: Metadata and auth wrapper for the otel-collector
 type: application
-
 version: 0.1.0
-appVersion: "0.1.3"
+appVersion: 0.1.4
