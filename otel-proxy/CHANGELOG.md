@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.4](https://github.com/MaxHerbs/hive-metrics/compare/otel-proxy@v0.1.3...otel-proxy@v0.1.4) (2025-07-14)
+
+
+### Bug Fixes
+
+* streamline container entrypoints ([12553f2](https://github.com/MaxHerbs/hive-metrics/commit/12553f235dcd36036e5e3af28b153f29928421c9))
+
 ## [0.1.3](https://github.com/MaxHerbs/hive-metrics/compare/otel-proxy@v0.1.2...otel-proxy@v0.1.3) (2025-07-10)
 
 
