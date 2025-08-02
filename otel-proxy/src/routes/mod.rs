@@ -2,7 +2,7 @@ pub mod health_check;
 use crate::AppState;
 use std::{collections::HashMap, sync::Arc};
 
-use axum::{extract::State, http::StatusCode, Json};
+use axum::{extract::State, http::{HeaderMap, StatusCode}, Json};
 use opentelemetry::KeyValue;
 use serde::{Deserialize, Serialize};
 use tracing::{debug, error};
@@ -10,8 +10,10 @@ use tracing::{debug, error};
 pub async fn log_metric(
     State(state): State<Arc<AppState>>,
     Json(body): Json<MetricBody>,
+    header: HeaderMap
 ) -> (StatusCode, Json<MetricsResponse>) {
     debug!("Incoming log with body:\n{:#?}", body);
+    debug!("Headers: {:?}", header);
 
     let mut unsupported_metrics: Vec<String> = Vec::new();
     body.metrics.into_iter().for_each(|(metric_name, val)| {

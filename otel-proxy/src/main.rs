@@ -1,22 +1,21 @@
+mod auth;
 mod routes;
 mod telemetry;
+
 use std::{collections::HashMap, sync::Arc};
 use telemetry::{init_metrics, MetricFactory};
 
 use routes::{health_check::health_check, log_metric};
 
 use axum::{
-    extract::Request,
-    http::HeaderMap,
-    middleware::{from_fn, Next},
-    response::Response,
-    routing::{get, post},
-    Router,
+    body::Body, extract::Request, http::{HeaderMap, HeaderName, HeaderValue, StatusCode}, middleware::{from_fn, Next}, response::Response, routing::{get, post}, Router
 };
 use clap::Parser;
 
 use opentelemetry::metrics::{Gauge, MeterProvider};
 use tracing::*;
+
+use crate::auth::{jwk_refresh_loop, validate_jwt_from_header};
 
 /// Otel-Proxy entry point
 #[derive(Parser, Debug)]
@@ -51,6 +50,8 @@ async fn main() {
         Cli::Serve(args) => {
             info!("Listening on port: {}", args.port);
 
+            tokio::spawn(jwk_refresh_loop());
+
             let meter_provider = init_metrics(&args);
             let meter = meter_provider.meter("otel-proxy");
             let metric_map = MetricFactory::create(&args, &meter);
@@ -70,6 +71,7 @@ async fn main() {
 fn build_router(shared_state: Arc<AppState>) -> Router {
     let metrics_router = Router::new()
         .route("/metrics", post(log_metric))
+        .layer(from_fn(auth_middleware))
         .with_state(shared_state);
 
     let health_router = Router::new().route("/healthz", get(health_check));
@@ -102,6 +104,27 @@ async fn incoming_requests(_headers: HeaderMap, request: Request, next: Next) ->
 
     response
 }
+
+pub async fn auth_middleware(mut req: Request<Body>, next: Next) -> Result<Response, StatusCode> {
+    info!("Query");
+    let claims = match validate_jwt_from_header(req.headers()).await {
+        Ok(c) => c,
+        Err(e) => {
+            warn!("Error: {:?}", e);
+            return Err(StatusCode::UNAUTHORIZED)
+        }
+    };
+    info!("Got UUID {}", claims.sub);
+
+    req.headers_mut().insert(
+        HeaderName::from_static("X-USER-ID"),
+        HeaderValue::from_str(&claims.sub).map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?,
+    );
+
+    Ok(next.run(req).await)
+}
+
+
 
 #[cfg(test)]
 mod tests {
